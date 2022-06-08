@@ -7,6 +7,8 @@
 #include "Math.hpp"
 #include "Structures.hpp"
 
+using namespace AMath;
+
 void RayTracer::Initialize()
 {
 

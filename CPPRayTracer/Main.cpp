@@ -8,10 +8,7 @@
 int main()
 {
 	std::cout << "Hello World!\n";
-	Color32 result = Color(1.0, 1.0, 1.0).ConvertToColor32();
-	
-	std::cout << "r" << int(result.r) << "g" << int(result.g) << "b" << int(result.b);
-
+	AMath::Quaternion quternion;
 	RayTracer::Initialize();
 	RayTracer::RenderFrame();
 }
