@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include "Math.hpp" 
 #include "RayTracer.hpp"
+#include <Windows.h>
 
 int main()
 {
@@ -11,5 +12,6 @@ int main()
 	AMath::Quaternion quternion;
 	RayTracer::Initialize();
 	RayTracer::RenderFrame();
+	ShellExecute(nullptr, nullptr, L"export.jpg", nullptr, nullptr, 0);
 }
 

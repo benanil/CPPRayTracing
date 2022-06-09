@@ -1,8 +1,7 @@
 #pragma once
 #include <immintrin.h>
 #include <math.h>
-
-using byte = unsigned char;
+#include "Core.hpp"
 
 #define AMATH_NAMESPACE namespace AMath {
 #define AMATH_END_NAMESPACE }
@@ -15,12 +14,12 @@ constexpr float RadToDeg = 180.0f / PI;
 constexpr float DegToRad = PI / 180.0f;
 
 template<typename T>
-inline float Max(T a, T b)	noexcept { return a > b ? a : b; }
+FINLINE float Max(T a, T b)	noexcept { return a > b ? a : b; }
 template<typename T>
-inline float Min(T a, T b)	noexcept { return a < b ? a : b; }
+FINLINE float Min(T a, T b)	noexcept { return a < b ? a : b; }
 template<typename T>
-inline float Clamp(T x, T a, T b)	noexcept { return Max(a, Min(b, x)); }
-inline float IsZero(float x)		noexcept { return fabs(x) > 1e-10; }
+FINLINE float Clamp(T x, T a, T b)	noexcept { return Max(a, Min(b, x)); }
+FINLINE float IsZero(float x)		noexcept { return fabs(x) > 1e-10; }
 
 struct Vector2i
 {
@@ -30,27 +29,27 @@ struct Vector2i
 		int arr[2];
 	};
 
-	Vector2i() : x(0), y(0) {}
-	Vector2i(int scale) : x(scale), y(scale) {}
-	Vector2i(int _x, int _y) : x(_x), y(_y) {}
+	FINLINE Vector2i() : x(0), y(0) {}
+	FINLINE Vector2i(int scale) : x(scale), y(scale) {}
+	FINLINE Vector2i(int _x, int _y) : x(_x), y(_y) {}
 
-	inline float Length()			{ return sqrtf(LengthSquared()); }
-	inline float LengthSquared()	{ return x * x + y * y; }
+	FINLINE float Length()			{ return sqrtf(LengthSquared()); }
+	FINLINE float LengthSquared()	{ return x * x + y * y; }
 
-	inline Vector2i operator + (Vector2i b) const { return Vector2i(x + b.x, y + b.y); }
-	inline Vector2i operator - (Vector2i b) const { return Vector2i(x - b.x, y - b.y); }
-	inline Vector2i operator * (Vector2i b) const { return Vector2i(x * b.x, y * b.y); }
-	inline Vector2i operator / (Vector2i b) const { return Vector2i(x / b.x, y / b.y); }
+	FINLINE Vector2i operator + (Vector2i b) const { return Vector2i(x + b.x, y + b.y); }
+	FINLINE Vector2i operator - (Vector2i b) const { return Vector2i(x - b.x, y - b.y); }
+	FINLINE Vector2i operator * (Vector2i b) const { return Vector2i(x * b.x, y * b.y); }
+	FINLINE Vector2i operator / (Vector2i b) const { return Vector2i(x / b.x, y / b.y); }
 
-	inline Vector2i operator += (Vector2i b) { x += b.x; y += b.y; return *this; }
-	inline Vector2i operator -= (Vector2i b) { x -= b.x; y -= b.y; return *this; }
-	inline Vector2i operator *= (Vector2i b) { x *= b.x; y *= b.y; return *this; }
-	inline Vector2i operator /= (Vector2i b) { x /= b.x; y /= b.y; return *this; }
+	FINLINE Vector2i operator += (Vector2i b) { x += b.x; y += b.y; return *this; }
+	FINLINE Vector2i operator -= (Vector2i b) { x -= b.x; y -= b.y; return *this; }
+	FINLINE Vector2i operator *= (Vector2i b) { x *= b.x; y *= b.y; return *this; }
+	FINLINE Vector2i operator /= (Vector2i b) { x /= b.x; y /= b.y; return *this; }
 
-	inline Vector2i operator *  (int b) const { return Vector2i(x * b, y * b); }
-	inline Vector2i operator /  (int b) const { return Vector2i(x / b, y / b); }
-	inline Vector2i operator *= (int b) { x *= b; y *= b; return *this; }
-	inline Vector2i operator /= (int b) { x /= b; y /= b; return *this; }
+	FINLINE Vector2i operator *  (int b) const { return Vector2i(x * b, y * b); }
+	FINLINE Vector2i operator /  (int b) const { return Vector2i(x / b, y / b); }
+	FINLINE Vector2i operator *= (int b) { x *= b; y *= b; return *this; }
+	FINLINE Vector2i operator /= (int b) { x /= b; y /= b; return *this; }
 };
 
 struct Vector2
@@ -61,29 +60,29 @@ struct Vector2
 		float arr[2];
 	};
 	
-	Vector2() : x(0), y(0) {}
-	Vector2(float scale) : x(scale), y(scale) {}
-	Vector2(float _x, float _y) : x(_x), y(_y) {}
+	FINLINE Vector2() : x(0), y(0) {}
+	FINLINE Vector2(float scale) : x(scale), y(scale) {}
+	FINLINE Vector2(float _x, float _y) : x(_x), y(_y) {}
 
-	inline float Length()			{ return sqrtf(LengthSquared()); }
-	inline float LengthSquared()	{ return x * x + y * y; }
+	FINLINE float Length()			{ return sqrtf(LengthSquared()); }
+	FINLINE float LengthSquared()	{ return x * x + y * y; }
 
 	void Normalize() { *this /= Length(); }
 
-	inline Vector2 operator + (Vector2 b) const { return Vector2(x + b.x, y + b.y); }
-	inline Vector2 operator - (Vector2 b) const { return Vector2(x - b.x, y - b.y); }
-	inline Vector2 operator * (Vector2 b) const { return Vector2(x * b.x, y * b.y); }
-	inline Vector2 operator / (Vector2 b) const { return Vector2(x / b.x, y / b.y); }
+	FINLINE Vector2 operator + (Vector2 b) const { return Vector2(x + b.x, y + b.y); }
+	FINLINE Vector2 operator - (Vector2 b) const { return Vector2(x - b.x, y - b.y); }
+	FINLINE Vector2 operator * (Vector2 b) const { return Vector2(x * b.x, y * b.y); }
+	FINLINE Vector2 operator / (Vector2 b) const { return Vector2(x / b.x, y / b.y); }
 
-	inline Vector2 operator += (Vector2 b) { x += b.x; y += b.y; return *this; }
-	inline Vector2 operator -= (Vector2 b) { x -= b.x; y -= b.y; return *this; }
-	inline Vector2 operator *= (Vector2 b) { x *= b.x; y *= b.y; return *this; }
-	inline Vector2 operator /= (Vector2 b) { x /= b.x; y /= b.y; return *this; }
+	FINLINE Vector2 operator += (Vector2 b) { x += b.x; y += b.y; return *this; }
+	FINLINE Vector2 operator -= (Vector2 b) { x -= b.x; y -= b.y; return *this; }
+	FINLINE Vector2 operator *= (Vector2 b) { x *= b.x; y *= b.y; return *this; }
+	FINLINE Vector2 operator /= (Vector2 b) { x /= b.x; y /= b.y; return *this; }
 
-	inline Vector2 operator *  (float b) const	{ return Vector2(x * b, y * b); }
-	inline Vector2 operator /  (float b) const  { return Vector2(x / b, y / b); }
-	inline Vector2 operator *= (float b)		{ x *= b; y *= b; return *this; }
-	inline Vector2 operator /= (float b)		{ x /= b; y /= b; return *this; }
+	FINLINE Vector2 operator *  (float b) const	{ return Vector2(x * b, y * b); }
+	FINLINE Vector2 operator /  (float b) const  { return Vector2(x / b, y / b); }
+	FINLINE Vector2 operator *= (float b)		{ x *= b; y *= b; return *this; }
+	FINLINE Vector2 operator /= (float b)		{ x /= b; y /= b; return *this; }
 };
 
 struct Vector3
@@ -95,24 +94,26 @@ struct Vector3
 		__m128 vec;
 	};
 
-	Vector3() : x(0), y(0), z(0) {}
-	Vector3(float scale) : x(scale), y(scale), z(scale) {}
+	FINLINE Vector3() : x(0), y(0), z(0) {}
+	FINLINE Vector3(float scale) : x(scale), y(scale), z(scale) {}
 	Vector3(float _x, float _y, float _z) : x(_x), y(_y), z(_z) {}
 	Vector3(__m128 _vec) : vec(_vec) {}
 
-	inline float Length() const			{ return sqrtf(LengthSquared()); }
-	inline float LengthSquared() const	{ return x * x + y * y + z * z; }
+	FINLINE float Length() const		{ return sqrtf(LengthSquared()); }
+	FINLINE float LengthSquared() const	{ return x * x + y * y + z * z; }
 
 	void Normalize() { *this /= Length(); }
 
-	inline static float Length(const Vector3& vec) { return vec.Length(); }
+	Vector3 Negate() const { return *this * -1; }
 
-	inline static float Dot(const Vector3& a, const Vector3& b)
+	FINLINE static float Length(const Vector3& vec) { return vec.Length(); }
+
+	FINLINE static float Dot(const Vector3& a, const Vector3& b)
 	{
 		return a.arr[0] * b.arr[0] + a.arr[1] * b.arr[1] + a.arr[2] * b.arr[2];
 	}
 
-	inline static Vector3 Lerp(const Vector3& a, const Vector3& b, float t)
+	FINLINE static Vector3 Lerp(const Vector3& a, const Vector3& b, float t)
 	{
 		return Vector3(
 			a.x + (b.x - a.x) * t,
@@ -121,41 +122,41 @@ struct Vector3
 		);
 	}
 
-	inline static Vector3 Cross(const Vector3& a, const Vector3& b)
+	FINLINE static Vector3 Cross(const Vector3& a, const Vector3& b)
 	{
 		return Vector3(a.arr[1] * b.arr[2] - a.arr[2] * b.arr[1],
 			           a.arr[2] * b.arr[0] - a.arr[0] * b.arr[2],
 			           a.arr[0] * b.arr[1] - a.arr[1] * b.arr[0]);
 	}
 
-	inline static Vector3 Normalize(const Vector3& a)
+	FINLINE static Vector3 Normalize(const Vector3& a)
 	{
 		return a / a.Length();
 	}
 
-	inline Vector3 One()	{ return  Vector3(1, 1, 1); }
-	inline Vector3 Zero()	{ return  Vector3(0, 0, 0); }
-	inline Vector3 Up()		{ return  Vector3(0, 1, 0) ; } 
-	inline Vector3 Right()	{ return  Vector3(1, 0, 0) ; } 
-	inline Vector3 Forward(){ return  Vector3(0, 0, 1) ; } 
-	inline Vector3 Left()	{ return  Vector3(-1, 0, 0); } 
-	inline Vector3 Back()	{ return  Vector3(0, 0, -1); } 
-	inline Vector3 Down()	{ return  Vector3(0, -1, 0); } 
+	FINLINE static Vector3 One()	{ return  Vector3(1, 1, 1); }
+	FINLINE static Vector3 Zero()	{ return  Vector3(0, 0, 0); }
+	FINLINE static Vector3 Up()		{ return  Vector3(0, 1, 0) ; } 
+	FINLINE static Vector3 Right()	{ return  Vector3(1, 0, 0) ; } 
+	FINLINE static Vector3 Forward(){ return  Vector3(0, 0, 1) ; } 
+	FINLINE static Vector3 Left()	{ return  Vector3(-1, 0, 0); } 
+	FINLINE static Vector3 Back()	{ return  Vector3(0, 0, -1); } 
+	FINLINE static Vector3 Down()	{ return  Vector3(0, -1, 0); } 
 
-	inline Vector3 operator + (const Vector3& b) const { return _mm_add_ps(vec, b.vec); }
-	inline Vector3 operator - (const Vector3& b) const { return _mm_sub_ps(vec, b.vec); }
-	inline Vector3 operator * (const Vector3& b) const { return _mm_mul_ps(vec, b.vec); }
-	inline Vector3 operator / (const Vector3& b) const { return _mm_div_ps(vec, b.vec); }
+	FINLINE Vector3 operator + (const Vector3& b) const { return _mm_add_ps(vec, b.vec); }
+	FINLINE Vector3 operator - (const Vector3& b) const { return _mm_sub_ps(vec, b.vec); }
+	FINLINE Vector3 operator * (const Vector3& b) const { return _mm_mul_ps(vec, b.vec); }
+	FINLINE Vector3 operator / (const Vector3& b) const { return _mm_div_ps(vec, b.vec); }
 
-	inline Vector3 operator += (const Vector3& b) { vec = _mm_add_ps(vec, b.vec); return *this; }
-	inline Vector3 operator -= (const Vector3& b) { vec = _mm_sub_ps(vec, b.vec); return *this; }
-	inline Vector3 operator *= (const Vector3& b) { vec = _mm_mul_ps(vec, b.vec); return *this; }
-	inline Vector3 operator /= (const Vector3& b) { vec = _mm_div_ps(vec, b.vec); return *this; }
+	FINLINE Vector3 operator += (const Vector3& b) { vec = _mm_add_ps(vec, b.vec); return *this; }
+	FINLINE Vector3 operator -= (const Vector3& b) { vec = _mm_sub_ps(vec, b.vec); return *this; }
+	FINLINE Vector3 operator *= (const Vector3& b) { vec = _mm_mul_ps(vec, b.vec); return *this; }
+	FINLINE Vector3 operator /= (const Vector3& b) { vec = _mm_div_ps(vec, b.vec); return *this; }
 
-	inline Vector3 operator * (float b) const { return _mm_mul_ps(vec, _mm_set_ps1(b)); }
-	inline Vector3 operator / (float b) const { return _mm_div_ps(vec, _mm_set_ps1(b)); }
-	inline Vector3 operator *= (float b)	  { vec  = _mm_mul_ps(vec, _mm_set_ps1(b)); return *this; }
-	inline Vector3 operator /= (float b)	  { vec  = _mm_div_ps(vec, _mm_set_ps1(b)); return *this; }
+	FINLINE Vector3 operator * (float b) const { return _mm_mul_ps(vec, _mm_set_ps1(b)); }
+	FINLINE Vector3 operator / (float b) const { return _mm_div_ps(vec, _mm_set_ps1(b)); }
+	FINLINE Vector3 operator *= (float b)	  { vec  = _mm_mul_ps(vec, _mm_set_ps1(b)); return *this; }
+	FINLINE Vector3 operator /= (float b)	  { vec  = _mm_div_ps(vec, _mm_set_ps1(b)); return *this; }
 };
 
 struct Vector4
@@ -167,12 +168,12 @@ struct Vector4
 		__m128 vec;
 	};
 
-	Vector4() : x(0), y(0), z(0), w(0) {}
-	Vector4(float scale) : x(scale), y(scale), z(scale), w(scale) {}
+	FINLINE Vector4() : x(0), y(0), z(0), w(0) {}
+	FINLINE Vector4(float scale) : x(scale), y(scale), z(scale), w(scale) {}
 	Vector4(float _x, float _y, float _z, float _w) : x(_x), y(_y), z(_z), w(_w) {}
 	Vector4(__m128 _vec) : vec(_vec) {}
 
-	inline static __m128 Dot(const Vector4& V1, const Vector4& V2)
+	FINLINE static __m128 Dot(const Vector4& V1, const Vector4& V2)
 	{
 		__m128 vTemp2 = V2.vec;
 		__m128 vTemp = _mm_mul_ps(V1.vec, vTemp2);
@@ -183,7 +184,7 @@ struct Vector4
 		return _mm_shuffle_ps(vTemp, vTemp, _MM_SHUFFLE(2, 2, 2, 2));    // Splat Z and return
 	}
 
-	inline static __m128 Normalize(const __m128 V)
+	FINLINE static __m128 Normalize(const __m128 V)
 	{
 		__m128 vLengthSq = _mm_mul_ps(V, V);
 		__m128 vTemp	= _mm_shuffle_ps(vLengthSq, vLengthSq, _MM_SHUFFLE(3, 2, 3, 2));
@@ -204,15 +205,15 @@ struct Vector4
 		return vResult;
 	}
 
-	inline Vector4 operator + (const Vector4& b) const { return _mm_add_ps(vec, b.vec); }
-	inline Vector4 operator - (const Vector4& b) const { return _mm_sub_ps(vec, b.vec); }
-	inline Vector4 operator * (const Vector4& b) const { return _mm_mul_ps(vec, b.vec); }
-	inline Vector4 operator / (const Vector4& b) const { return _mm_div_ps(vec, b.vec); }
+	FINLINE Vector4 operator + (const Vector4& b) const { return _mm_add_ps(vec, b.vec); }
+	FINLINE Vector4 operator - (const Vector4& b) const { return _mm_sub_ps(vec, b.vec); }
+	FINLINE Vector4 operator * (const Vector4& b) const { return _mm_mul_ps(vec, b.vec); }
+	FINLINE Vector4 operator / (const Vector4& b) const { return _mm_div_ps(vec, b.vec); }
 
-	inline Vector4 operator += (const Vector4& b) { vec = _mm_add_ps(vec, b.vec); return *this; }
-	inline Vector4 operator -= (const Vector4& b) { vec = _mm_sub_ps(vec, b.vec); return *this; }
-	inline Vector4 operator *= (const Vector4& b) { vec = _mm_mul_ps(vec, b.vec); return *this; }
-	inline Vector4 operator /= (const Vector4& b) { vec = _mm_div_ps(vec, b.vec); return *this; }
+	FINLINE Vector4 operator += (const Vector4& b) { vec = _mm_add_ps(vec, b.vec); return *this; }
+	FINLINE Vector4 operator -= (const Vector4& b) { vec = _mm_sub_ps(vec, b.vec); return *this; }
+	FINLINE Vector4 operator *= (const Vector4& b) { vec = _mm_mul_ps(vec, b.vec); return *this; }
+	FINLINE Vector4 operator /= (const Vector4& b) { vec = _mm_div_ps(vec, b.vec); return *this; }
 
 };
 
@@ -229,10 +230,10 @@ struct Color32
 	Color32(byte _r, byte _g, byte _b) : r(_r), g(_g), b(_b), a(255) {};
 	Color32(byte _r, byte _g, byte _b, byte _a) : r(_r), g(_g), b(_b), a(_a) {};
 
-	static __forceinline Color32 Red()		{ return Color32(255, 0, 0, 255);	}
-	static __forceinline Color32 Green()	{ return Color32(0, 255, 0, 255);	}
-	static __forceinline Color32 Blue()		{ return Color32(0, 0, 255, 255);	}
-	static __forceinline Color32 Orange()	{ return Color32(128, 128, 0, 255); }
+	static FINLINE Color32 Red()	{ return Color32(255, 0, 0, 255);	}
+	static FINLINE Color32 Green()	{ return Color32(0, 255, 0, 255);	}
+	static FINLINE Color32 Blue()	{ return Color32(0, 0, 255, 255);	}
+	static FINLINE Color32 Orange()	{ return Color32(128, 128, 0, 255); }
 };
 
 struct Color
@@ -246,19 +247,19 @@ struct Color
 
 	static constexpr float OneDiv255 = 1.0f / 255.0f;
 
-	Color() : r(0), g(0), b(0), a(0) {}
-	Color(Color32 col) : r(col.r * OneDiv255), g(col.g * OneDiv255), b(col.b * OneDiv255), a(col.a * OneDiv255) {}
-	Color(float _r, float _g, float _b) : r(_r), g(_g), b(_b), a(1) {}
+	FINLINE Color() : r(0), g(0), b(0), a(0) {}
+	FINLINE Color(Color32 col) : r(col.r * OneDiv255), g(col.g * OneDiv255), b(col.b * OneDiv255), a(col.a * OneDiv255) {}
+	FINLINE Color(float _r, float _g, float _b) : r(_r), g(_g), b(_b), a(1) {}
 	Color(float _r, float _g, float _b, float _a) : r(_r), g(_g), b(_b), a(_a) {}
 	Color(__m128 _vec) : vec(_vec) {}
 
-	inline static float Dot(const Color& a, const Color& b)
+	FINLINE static float Dot(const Color& a, const Color& b)
 	{
 		return a.arr[0] * b.arr[0] + a.arr[1] * b.arr[1] + a.arr[2] * b.arr[2];
 	}
 	
 	// lerp
-	inline static Color Mix(const Color& a, const Color& b, float t)
+	FINLINE static Color Mix(const Color& a, const Color& b, float t)
 	{
 		return Color(
 			a.r + (b.r - a.r) * t,
@@ -267,7 +268,7 @@ struct Color
 		);
 	}
 
-	inline static Color MixWithA(const Color& a, const Color& b, float t)
+	FINLINE static Color MixWithA(const Color& a, const Color& b, float t)
 	{
 		Color result = Mix(a, b, t);
 		result.a = a.a + (b.a - a.a) * t;
@@ -279,20 +280,25 @@ struct Color
 		return Color32(byte(converted.r), byte(converted.g), byte(converted.b));
 	}
 
-	inline Color operator + (const Color& b) const { return _mm_add_ps(vec, b.vec); }
-	inline Color operator - (const Color& b) const { return _mm_sub_ps(vec, b.vec); }
-	inline Color operator * (const Color& b) const { return _mm_mul_ps(vec, b.vec); }
-	inline Color operator / (const Color& b) const { return _mm_div_ps(vec, b.vec); }
+	FINLINE Color operator + (const Color& b) const { return _mm_add_ps(vec, b.vec); }
+	FINLINE Color operator - (const Color& b) const { return _mm_sub_ps(vec, b.vec); }
+	FINLINE Color operator * (const Color& b) const { return _mm_mul_ps(vec, b.vec); }
+	FINLINE Color operator / (const Color& b) const { return _mm_div_ps(vec, b.vec); }
 
-	inline Color operator += (const Color& b) { vec = _mm_add_ps(vec, b.vec); return *this; }
-	inline Color operator -= (const Color& b) { vec = _mm_sub_ps(vec, b.vec); return *this; }
-	inline Color operator *= (const Color& b) { vec = _mm_mul_ps(vec, b.vec); return *this; }
-	inline Color operator /= (const Color& b) { vec = _mm_div_ps(vec, b.vec); return *this; }
+	FINLINE Color operator += (const Color& b) { vec = _mm_add_ps(vec, b.vec); return *this; }
+	FINLINE Color operator -= (const Color& b) { vec = _mm_sub_ps(vec, b.vec); return *this; }
+	FINLINE Color operator *= (const Color& b) { vec = _mm_mul_ps(vec, b.vec); return *this; }
+	FINLINE Color operator /= (const Color& b) { vec = _mm_div_ps(vec, b.vec); return *this; }
 
-	inline Color operator * (float b) const { return _mm_mul_ps(vec, _mm_set_ps1(b)); }
-	inline Color operator / (float b) const { return _mm_div_ps(vec, _mm_set_ps1(b)); }
-	inline Color operator *= (float b)	    { vec  = _mm_mul_ps(vec, _mm_set_ps1(b)); return *this; }
-	inline Color operator /= (float b)		{ vec  = _mm_div_ps(vec, _mm_set_ps1(b)); return *this; }
+	FINLINE Color operator * (float b) const { return _mm_mul_ps(vec, _mm_set_ps1(b)); }
+	FINLINE Color operator / (float b) const { return _mm_div_ps(vec, _mm_set_ps1(b)); }
+	FINLINE Color operator *= (float b)	    { vec  = _mm_mul_ps(vec, _mm_set_ps1(b)); return *this; }
+	FINLINE Color operator /= (float b)		{ vec  = _mm_div_ps(vec, _mm_set_ps1(b)); return *this; }
+	
+	static FINLINE Color Red()		{ return Color(1.0, 0.0, 0.0, 1.0); }
+	static FINLINE Color Green()	{ return Color(0.0, 1.0, 0.0, 1.0); }
+	static FINLINE Color Blue()		{ return Color(0.0, 0.0, 1.0, 1.0); }
+	static FINLINE Color Orange()	{ return Color(0.5, 0.5, 0.0, 1.0); }
 };
 
 struct Matrix4
@@ -306,13 +312,16 @@ struct Matrix4
 		float m[4][4];
 	};
 
-	Matrix4() {}
+	Matrix4() : r1(_mm_set_ps(1, 0, 0, 0)), r2(_mm_set_ps(0, 1, 0, 0)), r3(_mm_set_ps(0, 0, 1, 0)), r4(_mm_set_ps(0, 0, 0, 1)) {}
 	Matrix4(const __m128& x, const __m128& y, const __m128& z, const __m128& w) : r1(x), r2(y), r3(z), r4(w) {}
 	Matrix4(const Vector4& x, const Vector4& y, const Vector4& z, const Vector4& w) : vec1(x), vec2(y), vec3(z), vec4(w) {}
 
+	Matrix4 operator * (const Matrix4& b)	{ return Multiply(*this, b); }
+	Matrix4 operator *= (const Matrix4& b) { *this = Multiply(*this, b); return *this; }
+
 	// THIS MATRIX CODES COPIED FROM DIRECTX MATH
 
-	inline static Matrix4 Identity()
+	FINLINE static Matrix4 Identity()
 	{
 		return Matrix4(
 			_mm_set_ps(1, 0, 0, 0),
@@ -322,7 +331,34 @@ struct Matrix4
 		);
 	}
 
-	inline static Matrix4 XMMatrixOrthographicOffCenterLH(float ViewLeft, float ViewRight, float ViewBottom, float ViewTop, float NearZ, float FarZ)
+	FINLINE static Matrix4 LookAtLH(const Vector3& EyePosition, const Vector3& EyeDirection, const Vector3& UpDirection)
+	{
+		Vector3 R2 = EyeDirection;
+		Vector3 R0 = Vector3::Cross(UpDirection, R2);
+		R0 = Vector3::Normalize(R0);
+		Vector3 R1 = Vector3::Cross(R2, R0);
+		Vector3 NegEyePosition = _mm_mul_ps(EyePosition.vec, _mm_set_ps1(-1));
+		Vector3 D0 = Vector3::Dot(R0, NegEyePosition);
+		Vector3 D1 = Vector3::Dot(R1, NegEyePosition);
+		Vector3 D2 = Vector3::Dot(R2, NegEyePosition);
+		R0 = _mm_and_ps(R0.vec, _mm_set_ps(0x00000000, 0x00000000, 0xFFFFFFFF, 0x00000000));
+		R1 = _mm_and_ps(R1.vec, _mm_set_ps(0x00000000, 0x00000000, 0xFFFFFFFF, 0x00000000));
+		R2 = _mm_and_ps(R2.vec, _mm_set_ps(0x00000000, 0x00000000, 0xFFFFFFFF, 0x00000000));
+		D0 = _mm_and_ps(D0.vec, _mm_set_ps(0x00000000, 0x00000000, 0x00000000, 0xFFFFFFFF));
+		D1 = _mm_and_ps(D1.vec, _mm_set_ps(0x00000000, 0x00000000, 0x00000000, 0xFFFFFFFF));
+		D2 = _mm_and_ps(D2.vec, _mm_set_ps(0x00000000, 0x00000000, 0x00000000, 0xFFFFFFFF));
+		D0 = _mm_or_ps(D0.vec, R0.vec);
+		D1 = _mm_or_ps(D1.vec, R1.vec);
+		D2 = _mm_or_ps(D2.vec, R2.vec);
+		Matrix4 M;
+		M.vec[0] = D0.vec;
+		M.vec[1] = D1.vec;
+		M.vec[2] = D2.vec;
+		M.vec[3] = _mm_set_ps(0, 0, 0, 1);
+		return Transpose(M);
+	}
+
+	FINLINE static Matrix4 XMMatrixOrthographicOffCenterLH(float ViewLeft, float ViewRight, float ViewBottom, float ViewTop, float NearZ, float FarZ)
 	{
 		Matrix4 M;
 		float fReciprocalWidth = 1.0f / (ViewRight - ViewLeft);
@@ -357,7 +393,7 @@ struct Matrix4
 		return M;
 	}
 
-	inline static Matrix4 PerspectiveFovLH(float FovAngleY, float AspectRatio, float NearZ, float FarZ)
+	FINLINE static Matrix4 PerspectiveFovLH(float FovAngleY, float AspectRatio, float NearZ, float FarZ)
 	{
 		Matrix4 M;
 		float CosFov = cos(FovAngleY * 0.5);
@@ -387,7 +423,7 @@ struct Matrix4
 		return M;
 	}
 
-	inline static Matrix4 Transpose(const Matrix4& M)
+	FINLINE static Matrix4 Transpose(const Matrix4& M)
 	{
 		const __m128 vTemp1 = _mm_shuffle_ps(M.r[0], M.r[1], _MM_SHUFFLE(1, 0, 1, 0));
 		const __m128 vTemp3 = _mm_shuffle_ps(M.r[0], M.r[1], _MM_SHUFFLE(3, 2, 3, 2));
@@ -402,7 +438,7 @@ struct Matrix4
 	}
 
 	// from directx math:  xnamathmatrix.inl
-	inline Matrix4 XMMatrixInverse(const Matrix4& M1, const Matrix4& M2)
+	Matrix4 XMMatrixInverse(const Matrix4& M1, const Matrix4& M2)
 	{
 		Matrix4 MT = Matrix4::Transpose(M1);
 		__m128 V00 = _mm_shuffle_ps(MT.r[2], MT.r[2], _MM_SHUFFLE(1, 1, 0, 0));
@@ -514,7 +550,7 @@ struct Matrix4
 		);
 	}
 
-	inline Matrix4 XMMatrixMultiply(Matrix4 M1, Matrix4 M2 )
+	Matrix4 Multiply(Matrix4 M1, Matrix4 M2 )
 	{
 		Matrix4 mResult;
 		// Use vW to hold the original row
@@ -578,7 +614,7 @@ struct Matrix4
 	}
 };
 
-inline Vector4 Vector3Transform(const Vector3& V, const Matrix4 M)
+FINLINE Vector4 Vector3Transform(const Vector3& V, const Matrix4 M)
 {
 	__m128 vResult = _mm_shuffle_ps(V.vec, V.vec, _MM_SHUFFLE(0, 0, 0, 0));
 	vResult = _mm_mul_ps(vResult, M.r[0]);
@@ -633,7 +669,7 @@ struct Quaternion
 		return vResult;
 	}
 
-	inline static __m128 Dot(const Quaternion& V1, const Quaternion& V2)
+	FINLINE static __m128 Dot(const Quaternion& V1, const Quaternion& V2)
 	{
 		__m128 vTemp2 = V2.vec;
 		__m128 vTemp = _mm_mul_ps(V1.vec, vTemp2);
@@ -644,7 +680,7 @@ struct Quaternion
 		return _mm_shuffle_ps(vTemp, vTemp, _MM_SHUFFLE(2, 2, 2, 2));    // Splat Z and return
 	}
 
-	static inline Quaternion Slerp(const Quaternion& Q0, const Quaternion& Q1, float t)
+	FINLINE Quaternion Slerp(const Quaternion& Q0, const Quaternion& Q1, float t)
 	{
 		// Result = Q0 * sin((1.0 - t) * Omega) / sin(Omega) + Q1 * sin(t * Omega) / sin(Omega)
 		const __m128 T = _mm_set_ps1(t);
@@ -698,11 +734,11 @@ struct Quaternion
 		return Result;
 	}
 
-	inline Quaternion operator *  (const Quaternion& b)	{  return Mul(this->vec, b.vec); }
-	inline Quaternion operator *= (const Quaternion& b) { this->vec = Mul(this->vec, b.vec); return *this; }
+	FINLINE Quaternion operator *  (const Quaternion& b)	{  return Mul(this->vec, b.vec); }
+	FINLINE Quaternion operator *= (const Quaternion& b) { this->vec = Mul(this->vec, b.vec); return *this; }
 };
 
-inline Quaternion EulerToQuaternion(Vector3 euler) noexcept
+FINLINE Quaternion EulerToQuaternion(Vector3 euler) noexcept
 {
 	// Abbreviations for the various angular functions
 	euler.x *= 0.5f; euler.y *= 0.5f; euler.z *= 0.5f;
@@ -750,32 +786,32 @@ inline Vector3 QuatToEulerAngles(const Quaternion& q) noexcept {
 	return eulerAngles;
 }
 
-inline float Repeat(const float& t, const float& length) noexcept
+FINLINE float Repeat(const float& t, const float& length) noexcept
 {
 	return Clamp(t - floorf(t / length) * length, 0.0f, length);
 }
 
-inline float LerpAngle(const float& a, const float& b, const float& t) noexcept
+FINLINE float LerpAngle(const float& a, const float& b, const float& t) noexcept
 {
 	float delta = Repeat((b - a), 360);
 	if (delta > 180) delta -= 360;
 	return a + delta * Clamp(t, 0.0f, 1.0f);
 }
 
-inline Vector3 ExtractPosition(const Matrix4& matrix) noexcept
+FINLINE Vector3 ExtractPosition(const Matrix4& matrix) noexcept
 {
 	Vector4 row3 = matrix.r[3];
 	return Vector3(row3.y, row3.z, row3.w);
 }
 
-inline Vector3 ExtractScale(const Matrix4& matrix) noexcept
+FINLINE Vector3 ExtractScale(const Matrix4& matrix) noexcept
 {
 	return Vector3(Vector3::Length(Vector3(matrix.r[0])),
 				   Vector3::Length(Vector3(matrix.r[2])),
 				   Vector3::Length(Vector3(matrix.r[1])));
 }
 
-inline Quaternion ExtractRotation(const Matrix4 matrix, bool rowNormalize = true) noexcept
+inline Quaternion ExtractRotation(const Matrix4& matrix, bool rowNormalize = true) noexcept
 {
 	Vector4 row0 = matrix.vec[0];
 	Vector4 row1 = matrix.vec[1];
@@ -833,21 +869,21 @@ inline Quaternion ExtractRotation(const Matrix4 matrix, bool rowNormalize = true
 	return q;
 }
 
-inline Vector3  RadianToDegree(const Vector3& radian) {
+FINLINE Vector3  RadianToDegree(const Vector3& radian) {
 	return Vector3(radian.x * RadToDeg, radian.y * RadToDeg, radian.z * RadToDeg);
 }
 
-inline Vector3  DegreeToRadian(const Vector3& degree) {
+FINLINE Vector3  DegreeToRadian(const Vector3& degree) {
 	return Vector3(degree.x * DegToRad, degree.y * DegToRad, degree.z * DegToRad);
 }
 
-inline void RadianToDegree(const Vector3& radian, Vector3& degree) {
+FINLINE void RadianToDegree(const Vector3& radian, Vector3& degree) {
 	degree.x = radian.x * RadToDeg;
 	degree.y = radian.y * RadToDeg;
 	degree.z = radian.z * RadToDeg;
 }
 
-inline void DegreeToRadian(const Vector3& degree, Vector3& radian) {
+FINLINE void DegreeToRadian(const Vector3& degree, Vector3& radian) {
 	radian.x = degree.x * DegToRad;
 	radian.y = degree.y * DegToRad;
 	radian.z = degree.z * DegToRad;
