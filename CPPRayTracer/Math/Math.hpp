@@ -20,14 +20,14 @@ FINLINE float Min(const T a, const T b)	noexcept { return a < b ? a : b; }
 template<typename T>
 FINLINE float Clamp(const T x, const T a, const T b)	noexcept { return Max(a, Min(b, x)); }
 FINLINE float IsZero(const float x)		noexcept { return fabsf(x) > 1e-10f; }
-FINLINE double IsZero(const  double x)	noexcept { return fabs(x)  > 1e-10; }
+FINLINE double IsZero(const double x)	noexcept { return fabs(x)  > 1e-10; }
 
 FINLINE float Repeat(const float t, const float length) noexcept
 {
 	return Clamp(t - floorf(t / length) * length, 0.0f, length);
 }
 
-FINLINE float Lerp(float from, float to, float t)
+FINLINE float Lerp(const float from, const float to, const float t) noexcept
 {
 	return from + (to - from) * t;
 }

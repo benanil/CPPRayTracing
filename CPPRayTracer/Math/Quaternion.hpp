@@ -119,19 +119,14 @@ FINLINE Quaternion VECTORCALL EulerToQuaternion(Vector3 euler) noexcept
 	// Abbreviations for the various angular functions
 	euler *= 0.5f;
 
-	const float s1 = sin(euler.x);
-	const float s2 = sin(euler.y);
-	const float s3 = sin(euler.z);
-	
-	const float c1 = cos(euler.x);
-	const float c2 = cos(euler.y);
-	const float c3 = cos(euler.z);
-	
+	Vector3 s = _mm_sin_ps(euler.vec);
+	Vector3 c = _mm_cos_ps(euler.vec);
+
 	return Quaternion(
-		(s1 * c2 * c3) + (c1 * s2 * s3),
-		(c1 * s2 * c3) - (s1 * c2 * s3),
-		(c1 * c2 * s3) + (s1 * s2 * c3),
-		(c1 * c2 * c3) - (s1 * s2 * s3)
+		(s.arr[1] * c.arr[2] * c.arr[3]) + (c.arr[1] * s.arr[2] * s.arr[3]),
+		(c.arr[1] * s.arr[2] * c.arr[3]) - (s.arr[1] * c.arr[2] * s.arr[3]),
+		(c.arr[1] * c.arr[2] * s.arr[3]) + (s.arr[1] * s.arr[2] * c.arr[3]),
+		(c.arr[1] * c.arr[2] * c.arr[3]) - (s.arr[1] * s.arr[2] * s.arr[3])
 	);
 }
 

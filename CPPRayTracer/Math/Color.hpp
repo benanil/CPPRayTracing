@@ -76,10 +76,10 @@ struct Color
 	FINLINE Color VECTORCALL operator *= (const Color b) { vec = _mm_mul_ps(vec, b.vec); return *this; }
 	FINLINE Color VECTORCALL operator /= (const Color b) { vec = _mm_div_ps(vec, b.vec); return *this; }
 
-	FINLINE Color operator * (float b) const { return _mm_mul_ps(vec, _mm_set_ps1(b)); }
-	FINLINE Color operator / (float b) const { return _mm_div_ps(vec, _mm_set_ps1(b)); }
-	FINLINE Color operator *= (float b) { vec = _mm_mul_ps(vec, _mm_set_ps1(b)); return *this; }
-	FINLINE Color operator /= (float b) { vec = _mm_div_ps(vec, _mm_set_ps1(b)); return *this; }
+	FINLINE Color operator *  (const float b) const { return _mm_mul_ps(vec, _mm_set_ps1(b)); }
+	FINLINE Color operator /  (const float b) const { return _mm_div_ps(vec, _mm_set_ps1(b)); }
+	FINLINE Color operator *= (const float b) { vec = _mm_mul_ps(vec, _mm_set_ps1(b)); return *this; }
+	FINLINE Color operator /= (const float b) { vec = _mm_div_ps(vec, _mm_set_ps1(b)); return *this; }
 
 	static FINLINE Color Red()		{ return Color(1.0, 0.0, 0.0, 1.0); }
 	static FINLINE Color Green()	{ return Color(0.0, 1.0, 0.0, 1.0); }

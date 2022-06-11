@@ -72,10 +72,10 @@ struct Vector3
 	FINLINE Vector3 VECTORCALL operator *= (const Vector3 b) { vec = _mm_mul_ps(vec, b.vec); return *this; }
 	FINLINE Vector3 VECTORCALL operator /= (const Vector3 b) { vec = _mm_div_ps(vec, b.vec); return *this; }
 
-	FINLINE Vector3 operator *  (float b) const { return _mm_mul_ps(vec, _mm_set_ps1(b)); }
-	FINLINE Vector3 operator /  (float b) const { return _mm_div_ps(vec, _mm_set_ps1(b)); }
-	FINLINE Vector3 operator *= (float b) noexcept { vec = _mm_mul_ps(vec, _mm_set_ps1(b)); return *this; }
-	FINLINE Vector3 operator /= (float b) noexcept { vec = _mm_div_ps(vec, _mm_set_ps1(b)); return *this; }
+	FINLINE Vector3 operator *  (const float b) const { return _mm_mul_ps(vec, _mm_set_ps1(b)); }
+	FINLINE Vector3 operator /  (const float b) const { return _mm_div_ps(vec, _mm_set_ps1(b)); }
+	FINLINE Vector3 operator *= (const float b) noexcept { vec = _mm_mul_ps(vec, _mm_set_ps1(b)); return *this; }
+	FINLINE Vector3 operator /= (const float b) noexcept { vec = _mm_div_ps(vec, _mm_set_ps1(b)); return *this; }
 };
 
 
@@ -148,10 +148,10 @@ struct Vector3d
 	FINLINE Vector3d VECTORCALL operator *= (const Vector3d b) { vec = _mm256_mul_pd(vec, b.vec); return *this; }
 	FINLINE Vector3d VECTORCALL operator /= (const Vector3d b) { vec = _mm256_div_pd(vec, b.vec); return *this; }
 
-	FINLINE Vector3d operator *	 (double b) const { return _mm256_mul_pd(vec, _mm256_set1_pd(b)); }
-	FINLINE Vector3d operator /	 (double b) const { return _mm256_div_pd(vec, _mm256_set1_pd(b)); }
-	FINLINE Vector3d operator *= (double b) noexcept { vec = _mm256_mul_pd(vec, _mm256_set1_pd(b)); return *this; }
-	FINLINE Vector3d operator /= (double b) noexcept { vec = _mm256_div_pd(vec, _mm256_set1_pd(b)); return *this; }
+	FINLINE Vector3d operator *	 (const double b) const { return _mm256_mul_pd(vec, _mm256_set1_pd(b)); }
+	FINLINE Vector3d operator /	 (const double b) const { return _mm256_div_pd(vec, _mm256_set1_pd(b)); }
+	FINLINE Vector3d operator *= (const double b) noexcept { vec = _mm256_mul_pd(vec, _mm256_set1_pd(b)); return *this; }
+	FINLINE Vector3d operator /= (const double b) noexcept { vec = _mm256_div_pd(vec, _mm256_set1_pd(b)); return *this; }
 };
 
 struct Vector3i
@@ -189,10 +189,10 @@ struct Vector3i
 	FINLINE Vector3i VECTORCALL operator *= (const Vector3i b) { vec = _mm_mul_epi32(vec, b.vec); return *this; }
 	FINLINE Vector3i VECTORCALL operator /= (const Vector3i b) { vec = _mm_div_epi32(vec, b.vec); return *this; }
 
-	FINLINE Vector3i operator *	 (double b) const { return _mm_mul_epi32(vec, _mm_set1_epi32(b)); }
-	FINLINE Vector3i operator /	 (double b) const { return _mm_div_epi32(vec, _mm_set1_epi32(b)); }
-	FINLINE Vector3i operator *= (double b) noexcept { vec = _mm_mul_epi32(vec, _mm_set1_epi32(b)); return *this; }
-	FINLINE Vector3i operator /= (double b) noexcept { vec = _mm_div_epi32(vec, _mm_set1_epi32(b)); return *this; }
+	FINLINE Vector3i operator *	 (const int b) const { return _mm_mul_epi32(vec, _mm_set1_epi32(b)); }
+	FINLINE Vector3i operator /	 (const int b) const { return _mm_div_epi32(vec, _mm_set1_epi32(b)); }
+	FINLINE Vector3i operator *= (const int b) noexcept { vec = _mm_mul_epi32(vec, _mm_set1_epi32(b)); return *this; }
+	FINLINE Vector3i operator /= (const int b) noexcept { vec = _mm_div_epi32(vec, _mm_set1_epi32(b)); return *this; }
 };
 
 // --- Convert ---

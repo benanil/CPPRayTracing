@@ -23,8 +23,10 @@ struct Matrix4d
 		r3(_mm256_set_pd(0, 0, 1, 0)), 
 		r4(_mm256_set_pd(0, 0, 0, 1)) { }
 	
-	VECTORCALL Matrix4d(const __m256d x, const __m256d y, const __m256d z, const __m256d w) : r1(x), r2(y), r3(z), r4(w) {}
-	VECTORCALL Matrix4d(const Vector4d& x, const Vector4d& y, const Vector4d& z, const Vector4d& w) : vec1(x), vec2(y), vec3(z), vec4(w) {}
+	// maybe fill this but working with 1024 bit struct is a bit unnecessary
+
+	VECTORCALL Matrix4d(const __m256d x, const __m256d y, const __m256d& z, const __m256d& w) : r1(x), r2(y), r3(z), r4(w) {}
+	VECTORCALL Matrix4d(const Vector4d x, const Vector4d y, const Vector4d& z, const Vector4d& w) : vec1(x), vec2(y), vec3(z), vec4(w) {}
 };
 
 FINLINE Matrix4 MatrixDoubleToFloat(const Matrix4d& md)
@@ -36,7 +38,6 @@ FINLINE Matrix4 MatrixDoubleToFloat(const Matrix4d& md)
 		_mm256_cvtpd_ps(md.r1)
 	);
 }
-
 
 FINLINE Matrix4d MatrixFloatToDouble(const Matrix4& mf)
 {
