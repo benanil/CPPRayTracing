@@ -43,8 +43,8 @@ struct Vector3
 	FINLINE static Vector3 Cross(const Vector3& a, const Vector3& b) noexcept
 	{
 		return Vector3(a.arr[1] * b.arr[2] - a.arr[2] * b.arr[1],
-			a.arr[2] * b.arr[0] - a.arr[0] * b.arr[2],
-			a.arr[0] * b.arr[1] - a.arr[1] * b.arr[0]);
+					   a.arr[2] * b.arr[0] - a.arr[0] * b.arr[2],
+					   a.arr[0] * b.arr[1] - a.arr[1] * b.arr[0]);
 	}
 
 	FINLINE static Vector3 Normalize(const Vector3& a) noexcept
@@ -208,14 +208,12 @@ struct Vector3i
 
 // --- Angle ---
 
-[[nodiscard]] FINLINE Vector3 VECTORCALL RadianToDegree(Vector3 radian) {
-	radian *= RadToDeg;										
-	return Vector3(radian.x, radian.y, radian.z);
+[[nodiscard]] FINLINE Vector3 VECTORCALL RadianToDegree(const Vector3 radian) {
+	return radian * RadToDeg;
 }
 
-[[nodiscard]] FINLINE Vector3 VECTORCALL DegreeToRadian(Vector3 degree) {
-	degree *= DegToRad;
-	return Vector3(degree.x, degree.y, degree.z);
+[[nodiscard]] FINLINE Vector3 VECTORCALL DegreeToRadian(const Vector3 degree) {
+	return degree * DegToRad;
 }
 
 FINLINE void VECTORCALL RadianToDegree(const Vector3 radian, Vector3& degree) {

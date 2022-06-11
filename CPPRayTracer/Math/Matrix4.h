@@ -43,18 +43,23 @@ struct Matrix4
 		R0 = Vector3::Normalize(R0);
 		Vector3 R1 = Vector3::Cross(R2, R0);
 		Vector3 NegEyePosition = _mm_mul_ps(EyePosition.vec, _mm_set_ps1(-1));
+		
 		Vector3 D0 = Vector3::Dot(R0, NegEyePosition);
 		Vector3 D1 = Vector3::Dot(R1, NegEyePosition);
 		Vector3 D2 = Vector3::Dot(R2, NegEyePosition);
+		
 		R0 = _mm_and_ps(R0.vec, _mm_set_ps(0x00000000, 0x00000000, 0xFFFFFFFF, 0x00000000));
 		R1 = _mm_and_ps(R1.vec, _mm_set_ps(0x00000000, 0x00000000, 0xFFFFFFFF, 0x00000000));
 		R2 = _mm_and_ps(R2.vec, _mm_set_ps(0x00000000, 0x00000000, 0xFFFFFFFF, 0x00000000));
+		
 		D0 = _mm_and_ps(D0.vec, _mm_set_ps(0x00000000, 0x00000000, 0x00000000, 0xFFFFFFFF));
 		D1 = _mm_and_ps(D1.vec, _mm_set_ps(0x00000000, 0x00000000, 0x00000000, 0xFFFFFFFF));
 		D2 = _mm_and_ps(D2.vec, _mm_set_ps(0x00000000, 0x00000000, 0x00000000, 0xFFFFFFFF));
+		
 		D0 = _mm_or_ps(D0.vec, R0.vec);
 		D1 = _mm_or_ps(D1.vec, R1.vec);
 		D2 = _mm_or_ps(D2.vec, R2.vec);
+		
 		Matrix4 M;
 		M.vec[0] = D0.vec;
 		M.vec[1] = D1.vec;
@@ -63,7 +68,7 @@ struct Matrix4
 		return Transpose(M);
 	}
 
-	FINLINE static Matrix4 VECTORCALL  XMMatrixOrthographicOffCenterLH(float ViewLeft, float ViewRight, float ViewBottom, float ViewTop, float NearZ, float FarZ)
+	FINLINE static Matrix4 VECTORCALL  OrthographicOffCenterLH(float ViewLeft, float ViewRight, float ViewBottom, float ViewTop, float NearZ, float FarZ)
 	{
 		Matrix4 M;
 		float fReciprocalWidth = 1.0f / (ViewRight - ViewLeft);
@@ -143,7 +148,7 @@ struct Matrix4
 	}
 
 	// from directx math:  xnamathmatrix.inl
-	Matrix4  VECTORCALL XMMatrixInverse(const Matrix4 M1, const Matrix4& M2) noexcept
+	Matrix4  VECTORCALL MatrixInverse(const Matrix4 M1, const Matrix4& M2) noexcept
 	{
 		Matrix4 MT = Matrix4::Transpose(M1);
 		__m128 V00 = _mm_shuffle_ps(MT.r[2], MT.r[2], _MM_SHUFFLE(1, 1, 0, 0));
