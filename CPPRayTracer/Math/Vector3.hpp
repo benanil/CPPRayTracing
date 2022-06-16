@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Math.hpp"
 
 AMATH_NAMESPACE
@@ -9,20 +10,33 @@ struct Vector3
 	{
 		struct { float x, y, z; };
 		float arr[3];
-		__m128 vec;
 	};
 
 	FINLINE Vector3() : x(0), y(0), z(0) {}
 	FINLINE Vector3(float scale)		  noexcept : x(scale), y(scale), z(scale) {}
-	Vector3(float _x, float _y, float _z) noexcept : x(_x), y(_y), z(_z) {}
-	VECTORCALL Vector3(__m128 _vec) : vec(_vec) {}
+	FINLINE Vector3(float _x, float _y, float _z) noexcept : x(_x), y(_y), z(_z) {}
+	VECTORCALL Vector3(__m128 _vec) { _mm_store_ps(arr, _vec); }
 
 	FINLINE float Length() const { return sqrtf(LengthSquared()); }
 	FINLINE float LengthSquared() const { return x * x + y * y + z * z; }
+	
+	inline __m128 vec() const
+	{
+		float tmp[4];
+		tmp[0] = x;
+		tmp[1] = y;
+		tmp[2] = z;
+		return _mm_load_ps(tmp);
+	};
 
-	Vector3& Normalize() { *this /= Length(); return *this; }
+	FINLINE Vector3& Normalized() { *this /= Length(); return *this; }
 
-	Vector3 Negate() const { return *this * -1; }
+	FINLINE static float VECTORCALL Distance(const Vector3 a, const Vector3 b)
+	{
+		Vector3 diff = a - b;
+		diff *= diff;
+		return sqrtf(diff.x + diff.y + diff.z);
+	}
 
 	FINLINE static float Length(const Vector3& vec) noexcept { return vec.Length(); }
 
@@ -57,25 +71,22 @@ struct Vector3
 	[[nodiscard]] FINLINE static Vector3 Up()		noexcept { return  Vector3(0.0f, 1.0f, 0.0f); }
 	[[nodiscard]] FINLINE static Vector3 Right()	noexcept { return  Vector3(1.0f, 0.0f, 0.0f); }
 	[[nodiscard]] FINLINE static Vector3 Forward()	noexcept { return  Vector3(0.0f, 0.0f, 1.0f); }
-	[[nodiscard]] FINLINE static Vector3 Left()		noexcept { return  Vector3(-1.f, 0.0f, 0.0f); }
-	[[nodiscard]] FINLINE static Vector3 Back()		noexcept { return  Vector3(0.0f, 0.0f, -1.0f); }
-	[[nodiscard]] FINLINE static Vector3 Down()		noexcept { return  Vector3(0.0f, -1.f, 0.0f); }
 
-	FINLINE Vector3 VECTORCALL operator - () const { return _mm_mul_ps(vec, _mm_set_ps1(-1.0f)); }
-	FINLINE Vector3 VECTORCALL operator + (const Vector3 b) const { return _mm_add_ps(vec, b.vec); }
-	FINLINE Vector3 VECTORCALL operator - (const Vector3 b) const { return _mm_sub_ps(vec, b.vec); }
-	FINLINE Vector3 VECTORCALL operator * (const Vector3 b) const { return _mm_mul_ps(vec, b.vec); }
-	FINLINE Vector3 VECTORCALL operator / (const Vector3 b) const { return _mm_div_ps(vec, b.vec); }
+	FINLINE Vector3 VECTORCALL operator - () const { return Vector3(-x, -y, -z); }
+	FINLINE Vector3 VECTORCALL operator + (const Vector3 b) const { return Vector3(x + b.x, y + b.y, z + b.z); }
+	FINLINE Vector3 VECTORCALL operator - (const Vector3 b) const { return Vector3(x - b.x, y - b.y, z - b.z); }
+	FINLINE Vector3 VECTORCALL operator * (const Vector3 b) const { return Vector3(x * b.x, y * b.y, z * b.z); }
+	FINLINE Vector3 VECTORCALL operator / (const Vector3 b) const { return Vector3(x / b.x, y / b.y, z / b.z); }
 
-	FINLINE Vector3 VECTORCALL operator += (const Vector3 b) { vec = _mm_add_ps(vec, b.vec); return *this; }
-	FINLINE Vector3 VECTORCALL operator -= (const Vector3 b) { vec = _mm_sub_ps(vec, b.vec); return *this; }
-	FINLINE Vector3 VECTORCALL operator *= (const Vector3 b) { vec = _mm_mul_ps(vec, b.vec); return *this; }
-	FINLINE Vector3 VECTORCALL operator /= (const Vector3 b) { vec = _mm_div_ps(vec, b.vec); return *this; }
+	FINLINE Vector3 VECTORCALL operator += (const Vector3 b) { x += b.x; y += b.y; z += b.z; return *this; }
+	FINLINE Vector3 VECTORCALL operator -= (const Vector3 b) { x -= b.x; y -= b.y; z -= b.z; return *this; }
+	FINLINE Vector3 VECTORCALL operator *= (const Vector3 b) { x *= b.x; y *= b.y; z *= b.z; return *this; }
+	FINLINE Vector3 VECTORCALL operator /= (const Vector3 b) { x /= b.x; y /= b.y; z /= b.z; return *this; }
 
-	FINLINE Vector3 operator *  (const float b) const { return _mm_mul_ps(vec, _mm_set_ps1(b)); }
-	FINLINE Vector3 operator /  (const float b) const { return _mm_div_ps(vec, _mm_set_ps1(b)); }
-	FINLINE Vector3 operator *= (const float b) noexcept { vec = _mm_mul_ps(vec, _mm_set_ps1(b)); return *this; }
-	FINLINE Vector3 operator /= (const float b) noexcept { vec = _mm_div_ps(vec, _mm_set_ps1(b)); return *this; }
+	FINLINE Vector3 operator *  (const float b) const	 { return Vector3(x * b, y * b, z * b);; }
+	FINLINE Vector3 operator /  (const float b) const	 { return Vector3(x / b, y / b, z / b); }
+	FINLINE Vector3 operator *= (const float b) noexcept { x *= b; y *= b; z *= b;  return *this; }
+	FINLINE Vector3 operator /= (const float b) noexcept { x /= b; y /= b; z /= b; return *this; }
 };
 
 
@@ -98,13 +109,18 @@ struct Vector3d
 
 	Vector3d& Normalize() { *this /= Length(); return *this; }
 
-	Vector3d Negate() const { return *this * -1; }
-
 	FINLINE static double Length(const Vector3d& vec) { return vec.Length(); }
 
 	FINLINE static double Dot(const Vector3d& a, const Vector3d& b)
 	{
 		return a.arr[0] * b.arr[0] + a.arr[1] * b.arr[1] + a.arr[2] * b.arr[2];
+	}
+
+	FINLINE static float Distance(const Vector3d& a, const Vector3d& b)
+	{
+		Vector3d diff = a - b;
+		diff *= diff;
+		return sqrt(diff.x + diff.y + diff.z);
 	}
 
 	FINLINE static Vector3d Lerp(const Vector3d& a, const Vector3d& b, float t)
@@ -133,9 +149,6 @@ struct Vector3d
 	[[nodiscard]] FINLINE static Vector3d Up()		noexcept { return  Vector3d(0.0, 1.0, 0.0); }
 	[[nodiscard]] FINLINE static Vector3d Right()	noexcept { return  Vector3d(1.0, 0.0, 0.0); }
 	[[nodiscard]] FINLINE static Vector3d Forward()	noexcept { return  Vector3d(0.0, 0.0, 1.0); }
-	[[nodiscard]] FINLINE static Vector3d Left()	noexcept { return  Vector3d(-1.0,  0.0,  0.0); }
-	[[nodiscard]] FINLINE static Vector3d Back()	noexcept { return  Vector3d(0.0 ,  0.0, -1.0); }
-	[[nodiscard]] FINLINE static Vector3d Down()	noexcept { return  Vector3d(0.0 , -1.0,  0.0); }
 
 	FINLINE Vector3d VECTORCALL operator - () const { return _mm256_mul_pd(vec, _mm256_set1_pd(-1.0)); }
 	FINLINE Vector3d VECTORCALL operator + (const Vector3d b) const { return _mm256_add_pd(vec, b.vec); }
@@ -173,8 +186,6 @@ struct Vector3i
 
 	Vector3i& Normalize() { *this /= Length(); return *this; }
 
-	FINLINE Vector3i Negate() const { return *this * -1; }
-
 	[[nodiscard]] FINLINE static Vector3i One() noexcept { return  Vector3i(1, 1, 1); }
 	[[nodiscard]] FINLINE static Vector3i Zero() noexcept { return  Vector3i(0, 0, 0); }
 
@@ -197,14 +208,14 @@ struct Vector3i
 
 // --- Convert ---
 
-[[nodiscard]] FINLINE Vector3i VECTORCALL ToVec3i(const Vector3 vec3f)  noexcept { return _mm_cvtps_epi32(vec3f.vec); }
+[[nodiscard]] FINLINE Vector3i VECTORCALL ToVec3i(const Vector3 vec3f)  noexcept { return _mm_cvtps_epi32(vec3f.vec()); }
 [[nodiscard]] FINLINE Vector3i VECTORCALL ToVec3i(const Vector3d vec3d) noexcept { return _mm256_cvtpd_epi32(vec3d.vec); }
 
 [[nodiscard]] FINLINE Vector3 VECTORCALL ToVec3f(const Vector3d vec3d) noexcept { return _mm256_cvtpd_ps(vec3d.vec); }
 [[nodiscard]] FINLINE Vector3 VECTORCALL ToVec3f(const Vector3i vec3i) noexcept { return _mm_cvtepi32_ps(vec3i.vec); }
 
 [[nodiscard]] FINLINE Vector3d VECTORCALL ToVec3d(const Vector3i vec3i) noexcept { return _mm256_cvtepi32_pd(vec3i.vec); }
-[[nodiscard]] FINLINE Vector3d VECTORCALL ToVec3d(const Vector3 vec3d)  noexcept { return _mm256_cvtps_pd	(vec3d.vec); }
+[[nodiscard]] FINLINE Vector3d VECTORCALL ToVec3d(const Vector3 vec3d)  noexcept { return _mm256_cvtps_pd	(vec3d.vec()); }
 
 // --- Angle ---
 

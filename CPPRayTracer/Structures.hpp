@@ -1,5 +1,5 @@
 #pragma once
-#include "Math.hpp"
+#include "Math/Vector3.hpp"
 
 AMATH_NAMESPACE
 

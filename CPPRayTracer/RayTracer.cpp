@@ -4,7 +4,8 @@
 #define __STDC_LIB_EXT1__
 #include "External/stb_image.h"
 #include "External/stb_image_write.h"
-#include "Math.hpp"
+#include "Math/Color.hpp"
+#include "Math/Vector3.hpp"
 #include "Structures.hpp"
 #include <memory>
 #include <vector>
@@ -12,7 +13,7 @@
 
 #define MaxDepth 500
 
-using namespace AMath;
+using namespace mat;
 
 inline double RandomFloat() {
     static std::uniform_real_distribution<float> distribution(0.0, 1.0);
